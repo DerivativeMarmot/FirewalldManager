@@ -15,7 +15,7 @@ class Manager:
         prompt = 'Enter the port(s) you want to open(separate using space)\nExample ports: 666/udp 9443/tcp\n> '
 
         # valid ports
-        ports = Utils.validatePorts(input(prompt), 'add')
+        ports = Utils().validatePorts(input(prompt), 'add')
         print()
         if len(ports) == 0:
             print('No ports added, requests canceled')
@@ -46,13 +46,21 @@ class Manager:
         print('Done')
         return ports_detail
     
-    def removePorts(ports_detail):
+    def removePorts(self, ports_detail) -> dict :
         prompt = 'Enter the port(s) you want to remove(separate using space)\nExample ports: 666/udp 9443/tcp\n> '
 
         # valid ports
-        ports = Utils.validatePorts(input(prompt), 'remove')
+        ports = Utils().validatePorts(input(prompt), 'remove')
         print()
         if len(ports) == 0:
+            print('No ports removed, requests canceled')
+            return ports_detail
+        
+        # confirm
+        if (input('Confirm the ports(y/n)')[0] == 'y'):
+            print('ports confirmed')
+            self.managePorts('remove', ports)
+        else:
             print('No ports removed, requests canceled')
             return ports_detail
         
@@ -100,6 +108,6 @@ class Manager:
     def applyConfig(self, ports_detail):
         ports = []
         for cat in ports_detail:
-            ports += Utils.validatePorts(' '.join(ports_detail[cat]), 'add')
+            ports += Utils().validatePorts(' '.join(ports_detail[cat]), 'add')
         for port in ports:
             self.managePorts('add', port)
