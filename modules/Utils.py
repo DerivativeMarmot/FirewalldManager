@@ -1,20 +1,17 @@
 import json
 import re
 
-class Utils():
-    def __init__(self, filepath:str, ports_detail:dict) -> None:
-        self.filepath = filepath
-        self.ports_detail = ports_detail
+class Utils:
 
-    def dump2File(self) -> None:
+    def dump2File(filepath, ports_detail) -> None:
         print('Adding details to file')
-        with open(self.filepath, 'w') as f:
-            json.dump(self.ports_detail, f)
+        with open(filepath, 'w') as f:
+            json.dump(ports_detail, f)
     
-    def getAllPorts(self) -> list:
+    def getAllPorts(ports_detail) -> list:
         ports = []
-        for key in self.ports_detail:
-            ports += self.ports_detail[key]
+        for key in ports_detail:
+            ports += ports_detail[key]
         return ports
     
     def validatePorts(self, ports:str, option:str) -> list:
@@ -45,12 +42,12 @@ class Utils():
         
         return validPorts
     
-    def listAllPorts(self):
+    def listAllPorts(self, ports_detail):
         promptCat = '1. With categories\n2. Without categories\n> '
         if input(promptCat)[0] == '1':
-            for cat in self.ports_detail:
+            for cat in ports_detail:
                 print(cat, end=': ')
-                for port in self.ports_detail[cat]:
+                for port in ports_detail[cat]:
                     print(port, end=' ')
                 print()
         else:

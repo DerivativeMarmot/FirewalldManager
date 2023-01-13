@@ -32,22 +32,21 @@ class Firewalld():
         """)
         match input('> '):
             case '1':
-                self.ports_detail = Manager(self.filepath, self.ports_detail).addPorts()
-                print(self.ports_detail)
+                self.ports_detail = Manager.addPorts(self.ports_detail)
             case '2':
-                self.ports_detail = Manager(self.filepath, self.ports_detail).removePorts()
+                self.ports_detail = Manager.removePorts(self.ports_detail)
             case '3':
-                self.ports_detail = Manager(self.filepath, self.ports_detail).generateConfig()
+                self.ports_detail = Manager.generateConfig(self.filepath)
             case '4':
-                Manager(self.filepath, self.ports_detail).applyConfig()
+                Manager.applyConfig(self.ports_detail)
             case '9':
-                Utils(self.filepath, self.ports_detail).listAllPorts()
+                Utils.listAllPorts(self.ports_detail)
             case '10':
-                Utils(self.filepath, self.ports_detail).dump2File()
+                Utils.dump2File(self.filepath, self.ports_detail)
             case '11':
                 print('Restarting firewalld')
                 # os.system('sudo systemctl restart firewalld')
-                Utils(self.filepath, self.ports_detail).dump2File()
+                Utils.dump2File(self.filepath, self.ports_detail)
                 exit()
             case '12':
                 exit()
