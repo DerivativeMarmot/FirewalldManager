@@ -8,16 +8,20 @@ class Firewalld():
         self.file_location = '{home_dir}/.config/firewalld/'.format(home_dir=os.path.expanduser('~'))
         self.filename = 'ports.json'
         self.filepath = self.file_location + self.filename
+        self.ports_detail = {}
         
         if not os.path.exists(self.file_location):
-            print('Generating new config file')
+            print('Creating config path')
             os.makedirs(self.file_location)
-            open(self.filepath, 'x') # create config file
-            self.ports_detail = {}
         else:
-            print('Loading config file')
-            with open(self.filepath, 'r') as f:
-                self.ports_detail:dict = json.load(f)
+            if not os.path.exists(self.filepath):
+                print('Creating config file')
+                with open(self.filepath, 'w') as f: 
+                    f.write('{ }')
+            else:
+                print('Loading config file')
+                with open(self.filepath, 'r') as f:
+                    self.ports_detail:dict = json.load(f)
 
     def menu(self):
         print("""
@@ -45,7 +49,7 @@ class Firewalld():
                 Utils().dump2File(self.filepath, self.ports_detail)
             case '11':
                 print('Restarting firewalld')
-                # os.system('sudo systemctl restart firewalld')
+                os.system('sudo systemctl restart firewalld')
                 Utils().dump2File(self.filepath, self.ports_detail)
                 exit()
             case '12':

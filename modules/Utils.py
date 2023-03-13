@@ -3,22 +3,22 @@ import re
 
 class Utils:
 
-    def dump2File(filepath, ports_detail) -> None:
+    def dump2File(self, filepath, ports_detail) -> None:
         print('Adding details to file')
         with open(filepath, 'w') as f:
             json.dump(ports_detail, f)
     
-    def getAllPorts(ports_detail) -> list:
+    def getAllPorts(self, ports_detail:dict) -> list:
         ports = []
         for key in ports_detail:
             ports += ports_detail[key]
         return ports
     
-    def validatePorts(self, ports:str, option:str) -> list:
+    def validatePorts(self, ports_detail:dict, ports:str, option:str) -> list:
         print('---Validating ports---')
         pattern = re.compile('\d+/(?:tcp|udp)') # '?:' non-capturing group
         validPorts = []
-        allActivePorts = self.getAllPorts()
+        allActivePorts = self.getAllPorts(ports_detail)
         for port in set(pattern.findall(ports)):
             if int(port.split('/')[0]) in range(1, 65535):
                 match(option):

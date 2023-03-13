@@ -4,18 +4,18 @@ import subprocess
 
 class Manager:
 
-    def managePorts(operation:str, ports:list):
+    def managePorts(self, operation:str, ports:list):
         cmd = 'sudo firewall-cmd --zone=public --permanent --{operation}-port={port}'
         for port in ports:
             print(cmd.format(operation=operation, port=port))
-            # os.system(cmd.format(operation=operation, port=port))
+            os.system(cmd.format(operation=operation, port=port))
         print()
 
     def addPorts(self, ports_detail) -> dict:
         prompt = 'Enter the port(s) you want to open(separate using space)\nExample ports: 666/udp 9443/tcp\n> '
 
         # valid ports
-        ports = Utils().validatePorts(input(prompt), 'add')
+        ports = Utils().validatePorts(ports_detail, input(prompt), 'add')
         print()
         if len(ports) == 0:
             print('No ports added, requests canceled')
@@ -79,7 +79,7 @@ class Manager:
         print(ports_detail)
         return ports_detail
     
-    def generateConfig(filepath): # need improvement
+    def generateConfig(self, filepath): # need improvement
         command = 'sudo firewalld-cmd --list-ports'
         ports:set = set(subprocess.run(command.split(' '), stdout=subprocess.PIPE).stdout.decode('utf-8').split(' '))
         print('All opening ports\n', ports)
